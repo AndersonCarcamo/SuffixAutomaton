@@ -29,7 +29,7 @@ int main() {
 
     // Ejemplo de cómo usar el autómata de sufijos para verificar la presencia de un sufijo
     cout << sa.containsSuffix("carolina") << endl; // Salida esperada: 1 (true)
-    cout << sa.containsSuffix("banana") << endl; // Salida esperada: 0 (false)
+    cout << sa.containsSuffix("banana") << endl;
 
     return 0;
 }

@@ -19,7 +19,7 @@ int main() {
 //
 //    }
 
-    string text = "banana";
+    string text = "banana carolina";
 
     SuffixAutomaton sa(text);
     sa.insert("carolina");
@@ -29,7 +29,7 @@ int main() {
 
     // Ejemplo de cómo usar el autómata de sufijos para verificar la presencia de un sufijo
     cout << sa.containsSuffix("carolina") << endl; // Salida esperada: 1 (true)
-    cout << sa.containsSuffix("banana") << endl;
+    cout << sa.containsSuffix("ba ca") << endl;
 
     return 0;
 }

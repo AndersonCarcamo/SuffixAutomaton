@@ -6,72 +6,72 @@
 #include <cmath>
 #include <iomanip>
 #include "SuffixAutomaton.h"
-typedef std::pair<char, int> tr;
-using namespace std;
 #include <chrono>
-using namespace std::chrono;
-string limpiarPalabra(const string& palabra) {
-    string palabraLimpia;
-    for (char c : palabra) {
-        if (c == ',' || c == '.') {
-            continue; // Omitir puntos y comas
+using namespace std;
+typedef std::pair<char, int> tr;
+
+
+float compararTexto(const string& Txc, SuffixAutomaton& ejem) {
+    float cont_oraciones_iguales = 0;
+    float cont_oraciones_totales = 0;
+
+    string oracion;
+    for (char caracter : Txc) {
+        if (caracter == '.') {
+            cont_oraciones_totales += 1;
+
+            if (!oracion.empty() && ejem.containsSuffix(oracion)) {
+                cont_oraciones_iguales += 1;
+            }
+
+            oracion.clear();
+        } else {
+            oracion += caracter;
         }
-        palabraLimpia += c;
     }
-    return palabraLimpia;
+
+    return cont_oraciones_iguales / cont_oraciones_totales;
 }
 
-// A single state in our DFA, which represents an equivalence class.
-int main(){
-    float cont=0;
+int main() {
+    float cont = 0;
     string nombreArchivo = "texto_base.txt";
 
-    // Objeto ifstream para abrir el archivo
     ifstream archivo(nombreArchivo);
-
-    // Verificar si el archivo se abrió correctamente
     if (!archivo.is_open()) {
         cerr << "No se pudo abrir el archivo " << nombreArchivo << endl;
-        return 1; // Terminar el programa con un código de error
+        return 1;
     }
 
-    // Leer y concatenar el contenido del archivo en un solo string
     ostringstream contenido;
     string linea;
     while (getline(archivo, linea)) {
-        contenido << linea << ' '; // Agregar la línea y un espacio
+        contenido << linea << ' ';
     }
 
-    // Obtener el string resultante
     string contenidoFinal = contenido.str();
-
-    // Cerrar el archivo después de leer
     archivo.close();
 
-
-    // Mostrar el contenido resultante
     SuffixAutomaton ejem(contenidoFinal);
+
     ifstream archivo2("texto_copia.txt");
     if (!archivo2.is_open()) {
         cerr << "No se pudo abrir el archivo " << nombreArchivo << endl;
-        return 1; // Terminar el programa con un código de error
+        return 1;
     }
-    vector<string> palabras;
-    string palabra;
-    while (archivo2 >> palabra) {
-        palabra = limpiarPalabra(palabra);
 
-        if (!palabra.empty()) 
-            palabras.push_back(palabra);
+    ostringstream contenidoCopia;
+    string lineaCopia;
+    while (getline(archivo2, lineaCopia)) {
+        contenidoCopia << lineaCopia << ' ';
     }
+
+    string textoCopia = contenidoCopia.str();
     archivo2.close();
-    for (const auto& p : palabras) {
-        if(ejem.containsSuffix(p))
-            cont+=1;
-    }
-    float total=(cont/palabras.size())*100;
-    cout<<"El total de similitud en el texto es: "<<fixed << setprecision(2)<<total<<"%"<<endl;
+
+
+    float resultado = compararTexto(textoCopia, ejem);
+    cout << "El total de similitud en el texto es: " << fixed << setprecision(2) << resultado * 100 << "%" << endl;
 
     return 0;
-    
 }

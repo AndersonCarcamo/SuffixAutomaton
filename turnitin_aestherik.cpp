@@ -9,85 +9,59 @@
 #include <chrono>
 
 using namespace std;
-using namespace std::chrono;
+typedef std::pair<char, int> tr;
 
-string limpiarPalabra(const string& palabra) {
-    string palabraLimpia;
-    for (char c : palabra) {
-        if (c == ',' || c == '.') {
-            continue; // Omitir puntos y comas
-        }
-        palabraLimpia += c;
-    }
-    return palabraLimpia;
-}
-
-string leerContenidoArchivo(const string& nombreArchivo) {
+string leerArchivo(const string& nombreArchivo) {
     ifstream archivo(nombreArchivo);
     if (!archivo.is_open()) {
         cerr << "No se pudo abrir el archivo " << nombreArchivo << endl;
-        return "";
+        exit(1);
     }
 
     ostringstream contenido;
     string linea;
     while (getline(archivo, linea)) {
-        contenido << linea << ' '; // Agregar la línea y un espacio
+        contenido << linea << ' ';
     }
 
     archivo.close();
     return contenido.str();
 }
 
-vector<string> obtenerPalabrasDesdeArchivo(const string& nombreArchivo) {
-    ifstream archivo(nombreArchivo);
-    if (!archivo.is_open()) {
-        cerr << "No se pudo abrir el archivo " << nombreArchivo << endl;
-        return {};
-    }
+float compararTexto(const string& Txc, SuffixAutomaton& ejem) {
+    float cont_oraciones_iguales = 0;
+    float cont_oraciones_totales = 0;
 
-    vector<string> palabras;
-    string palabra;
-    while (archivo >> palabra) {
-        palabra = limpiarPalabra(palabra);
-        if (!palabra.empty()) {
-            palabras.push_back(palabra);
+    string oracion;
+    for (char caracter : Txc) {
+        if (caracter == '.') {
+            cont_oraciones_totales += 1;
+
+            if (!oracion.empty() && ejem.containsSuffix(oracion)) {
+                cont_oraciones_iguales += 1;
+            }
+
+            oracion.clear();
+        } else {
+            oracion += caracter;
         }
     }
 
-    archivo.close();
-    return palabras;
+    return cont_oraciones_iguales / cont_oraciones_totales;
 }
-
-float calcularSimilitud(SuffixAutomaton& automaton, const vector<string>& palabras) {
-    float cont = 0;
-    for (const auto& p : palabras) {
-        if (automaton.containsSuffix(p)) {
-            cont += 1;
-        }
-    }
-    return (cont / palabras.size()) * 100;
-}
-
 
 int main() {
-    float cont = 0;
     string nombreArchivoBase = "texto_base.txt";
+    string nombreArchivoCopia = "texto_copia.txt";
 
-    string contenidoBase = leerContenidoArchivo(nombreArchivoBase);
+    string contenidoBase = leerArchivo(nombreArchivoBase);
+    string contenidoCopia = leerArchivo(nombreArchivoCopia);
+
     SuffixAutomaton ejem(contenidoBase);
 
-    string nombreArchivoCopia = "texto_copia.txt";
-    vector<string> palabrasCopia = obtenerPalabrasDesdeArchivo(nombreArchivoCopia);
+    float resultado = compararTexto(contenidoCopia, ejem);
 
-    for (const auto& p : palabrasCopia) {
-        if (ejem.containsSuffix(p)) {
-            cont += 1;
-        }
-    }
-
-    float total = (cont / palabrasCopia.size()) * 100;
-    cout << "El total de similitud en el texto es: " << fixed << setprecision(2) << total << "%" << endl;
+    cout << "El total de similitud en el texto es: " << fixed << setprecision(2) << resultado * 100 << "%" << endl;
 
     return 0;
 }

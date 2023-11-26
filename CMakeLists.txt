@@ -11,7 +11,6 @@ add_executable(SuffixAutomaton
         patriciaTrie.h
         suffixAutomaton.h
         trie.h
-        version1.cpp
         suffixAutomatonNO.h
         circularArrayMod.h
         nodeMod.h)

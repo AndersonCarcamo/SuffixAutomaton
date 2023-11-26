@@ -1,5 +1,5 @@
 #include <iostream>
-#include "suffixAutomaton.h"
+#include "suffixAutomatonNO.h"
 #include "patriciaTrie.h"
 #include "generadorPalabras.h"
 
@@ -11,7 +11,7 @@ int main()
 {
     string s;
     char a;
-    cout << "Enter the string to construct a su,,,ffix automaton:" << endl;
+    cout << "Enter the string to construct a suffix automaton:" << endl;
     cin.get(a);
     while (a != '\n')
     {

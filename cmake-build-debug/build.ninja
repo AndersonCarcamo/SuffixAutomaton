@@ -56,13 +56,6 @@ build CMakeFiles/SuffixAutomaton.dir/main.cpp.o: CXX_COMPILER__SuffixAutomaton_u
   OBJECT_DIR = CMakeFiles/SuffixAutomaton.dir
   OBJECT_FILE_DIR = CMakeFiles/SuffixAutomaton.dir
 
-build CMakeFiles/SuffixAutomaton.dir/version1.cpp.o: CXX_COMPILER__SuffixAutomaton_unscanned_Debug /home/ambar/Anderson/AED/proyecto/SuffixAutomaton/version1.cpp || cmake_object_order_depends_target_SuffixAutomaton
-  DEP_FILE = CMakeFiles/SuffixAutomaton.dir/version1.cpp.o.d
-  FLAGS = -g -std=gnu++14 -fdiagnostics-color=always
-  INCLUDES = -I/home/ambar/Anderson/AED/proyecto/SuffixAutomaton/.
-  OBJECT_DIR = CMakeFiles/SuffixAutomaton.dir
-  OBJECT_FILE_DIR = CMakeFiles/SuffixAutomaton.dir
-
 
 # =============================================================================
 # Link build statements for EXECUTABLE target SuffixAutomaton
@@ -71,7 +64,7 @@ build CMakeFiles/SuffixAutomaton.dir/version1.cpp.o: CXX_COMPILER__SuffixAutomat
 #############################################
 # Link the executable SuffixAutomaton
 
-build SuffixAutomaton: CXX_EXECUTABLE_LINKER__SuffixAutomaton_Debug CMakeFiles/SuffixAutomaton.dir/main.cpp.o CMakeFiles/SuffixAutomaton.dir/version1.cpp.o
+build SuffixAutomaton: CXX_EXECUTABLE_LINKER__SuffixAutomaton_Debug CMakeFiles/SuffixAutomaton.dir/main.cpp.o
   FLAGS = -g
   OBJECT_DIR = CMakeFiles/SuffixAutomaton.dir
   POST_BUILD = :

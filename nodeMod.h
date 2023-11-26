@@ -5,16 +5,13 @@ template <typename K, typename V>
 struct Node {
     K key;
     V value;
-    Node();
+    Node() = default;
     Node(K k, V v);
-    ~Node();
+    ~Node() = default;
 };
 
 template <typename K, typename V>
 Node<K, V>::Node(K k, V v): key(k), value(v){}
 
-template <typename K, typename V>
-Node<K,V>::~Node() {
-}
 
 #endif //SUFFIXAUTOMATON_NODEMOD_H

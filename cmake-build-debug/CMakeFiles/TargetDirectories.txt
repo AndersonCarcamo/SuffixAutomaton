@@ -1,0 +1,3 @@
+/home/ambar/Anderson/AED/proyecto/SuffixAutomaton/cmake-build-debug/CMakeFiles/SuffixAutomaton.dir
+/home/ambar/Anderson/AED/proyecto/SuffixAutomaton/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/ambar/Anderson/AED/proyecto/SuffixAutomaton/cmake-build-debug/CMakeFiles/rebuild_cache.dir

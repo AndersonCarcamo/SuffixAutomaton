@@ -1,14 +1,16 @@
-#ifndef PROYECTOAED_SUFFIXAUTOMATON_H
-#define PROYECTOAED_SUFFIXAUTOMATON_H
+#ifndef SUFFIXAUTOMATON_SUFFIXAUTOMATONNO_H
+#define SUFFIXAUTOMATON_SUFFIXAUTOMATONNO_H
 
 #include <unordered_map>
+#include "circularArrayMod.h"
 #include <vector>
+
 #include <string>
 #include <algorithm>
 #include <limits>
 
 
-typedef std::pair<char, int> tr; // para una transición
+typedef Node<char, int> tr; // para una transición
 using namespace std;
 
 struct State {
@@ -35,9 +37,9 @@ struct State {
     {
         for (auto& t : transitions)
         {
-            if (t.first == c)
+            if (t.key == c)
             {
-                return t.second;
+                return t.value;
             }
         }
         return -1;
@@ -48,9 +50,9 @@ struct State {
     {
         for (auto& t : transitions)
         {
-            if (t.first == c)
+            if (t.key == c)
             {
-                t.second = i;
+                t.value = i;
                 return;
             }
         }
@@ -117,7 +119,7 @@ struct SuffixAutomaton {
                     linked = states[linked].link;
                     t = states[linked].GetTransition(c);
                 }
-                // si no tiene enlace , se agrega cur como hijo del estado raiz y se avanza al proximo caracter
+                    // si no tiene enlace , se agrega cur como hijo del estado raiz y se avanza al proximo caracter
                 else
                 {
                     states[cur].link = 0;
@@ -239,4 +241,4 @@ struct SuffixAutomaton {
     }
 };
 
-#endif //PROYECTOAED_SUFFIXAUTOMATON_H
+#endif //SUFFIXAUTOMATON_SUFFIXAUTOMATONNO_H

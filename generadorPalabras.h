@@ -7,7 +7,6 @@
 
 using namespace std;
 
-// Function to generate a random word of given length
 string generateRandomWord(int length) {
     const string characters = "abcdefghijklmnopqrstuvwxyz";
     const int charCount = characters.size();
@@ -24,7 +23,6 @@ string generateRandomWord(int length) {
     return randomWord;
 }
 
-// Function to generate a vector of N random words of given length
 vector<string> generateRandomWords(int N, int wordLength) {
     vector<string> randomWords;
     for (int i = 0; i < N; ++i) {

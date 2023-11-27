@@ -4,7 +4,7 @@
     #include <unordered_map>
     #include "circularArrayMod.h"
 
-    #include <vector>
+    #include <vector> // para calcular las posiciones de todas las palabras parecidas
     #include <string>
     #include <algorithm>
     #include <limits>

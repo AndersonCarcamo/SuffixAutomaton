@@ -3,8 +3,8 @@
 
     #include <unordered_map>
     #include "circularArrayMod.h"
-    #include <vector>
 
+    #include <vector>
     #include <string>
     #include <algorithm>
     #include <limits>
@@ -19,7 +19,7 @@
         int first; // posicion de la primera ocurrencia en ese estado
         bool clone = false; // si el estado es un estado clonado
         CircularArray<tr> transitions; // transiciones salientes hacia otros estados
-        vector<int> suffixreferences; // referencias a sufijos
+        CircularArray<int> suffixreferences; // referencias a sufijos
         bool terminal = false; // si un estado es terminal
         int index; // indice del estado
 
@@ -60,7 +60,7 @@
     };
 
     struct SuffixAutomaton {
-        bool suffixreferences = false; // indica si se ha calculado las referencia a sufijos
+        bool issuffixreferences = false; // indica si se ha calculado las referencia a sufijos
         CircularArray<State> states; // vector de estados
         State GetState(int i)  // devuelve el estado con indice i
         {
@@ -84,7 +84,7 @@
             {
                 states[states[i].link].suffixreferences.push_back(i);
             }
-            suffixreferences = true;
+            issuffixreferences = true;
         }
 
         // crea el automata para una cadena s
@@ -217,7 +217,7 @@
         {
             vector<int> p;
             int sz = s.size();
-            if (!suffixreferences) ComputeSuffixReferences();
+            if (!issuffixreferences) ComputeSuffixReferences();
             int next = 0;
             for (int i = 0; i < sz; i++)
             {
@@ -225,18 +225,18 @@
                 if (next == -1) return {};
             }
             // Traverse link tree down from first occurrence to find all others
-            vector<int> stack = {next};
+            CircularArray<int> stack = {next};
             while (stack.size() > 0)
             {
-                next = stack.back();
+                next = stack.getBack();
                 stack.pop_back();
                 if (!states[next].clone) p.push_back(states[next].first - sz + 1);
-                for (auto& i : states[next].suffixreferences)
+                for (int i=states[next].suffixreferences.Idxfront(); i<=states[next].suffixreferences.Idxback(); i = (i+1)%states[next].suffixreferences.getCapacity())
                 {
                     stack.push_back(i);
                 }
             }
-            sort(p.begin(), p.end());
+            std::sort(p.begin(), p.end());
             return p;
         }
     };

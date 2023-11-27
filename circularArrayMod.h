@@ -11,8 +11,10 @@ class CircularArray {
 private:
     T* array;
     int capacity{};
+    bool isFull;
     int factorMulti = 2; //factor de multiplicidad para escalado del array
     int back{}, front{};
+    static const int INVALID_INDEX = -1;
 public:
     CircularArray(int _capacity = 10);
     virtual ~CircularArray();
@@ -72,6 +74,7 @@ CircularArray<T>::CircularArray(int _capacity)
     this->array = new T[_capacity];
     this->front = this->back = -1;//empty
     this->factorMulti = 2;
+    this->isFull = false;
 }
 
 template <typename T>

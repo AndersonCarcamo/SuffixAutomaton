@@ -4,11 +4,12 @@
 #include <vector>
 #include <random>
 #include <ctime>
+#include "circularArrayMod.h"
 
 using namespace std;
 
 string generateRandomWord(int length) {
-    const string characters = "abcdefghijklmnopqrstuvwxyz";
+    const string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     const int charCount = characters.size();
 
     random_device rd;
@@ -23,8 +24,8 @@ string generateRandomWord(int length) {
     return randomWord;
 }
 
-vector<string> generateRandomWords(int N, int wordLength) {
-    vector<string> randomWords;
+CircularArray<string> generateRandomWords(int N, int wordLength) {
+    CircularArray<string> randomWords;
     for (int i = 0; i < N; ++i) {
         randomWords.push_back(generateRandomWord(wordLength));
     }

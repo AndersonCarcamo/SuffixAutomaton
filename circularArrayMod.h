@@ -53,18 +53,23 @@ int CircularArray<T>::prev(int index) {
 
 template <typename T>
 void CircularArray<T>::redimensionar() {
-    int _capacity = capacity*2;
+    int _capacity = capacity * factorMulti;
     T* arrayTemp = new T[_capacity];
     int _size = size(), _back = front;
-    for(int i=0; i<_size; i++){
-        arrayTemp[(front+i)%_capacity] = array[(front+i)%capacity];
-        _back = (_back+1)%_capacity;
+
+    for (int i = 0; i < _size; i++) {
+        arrayTemp[(front + i) % _capacity] = array[(front + i) % capacity];
+        _back = (_back + 1) % _capacity;
     }
-    delete [] array;
+
+    delete[] array;
     array = arrayTemp;
     capacity = _capacity;
+
+    // Update back index based on the new capacity
     back = prev(_back);
 }
+
 
 
 template <typename T>

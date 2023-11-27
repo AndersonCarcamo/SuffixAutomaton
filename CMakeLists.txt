@@ -13,4 +13,7 @@ add_executable(SuffixAutomaton
         trie.h
         suffixAutomatonNO.h
         circularArrayMod.h
-        nodeMod.h)
+        nodeMod.h
+        menu.h
+        compararTexto.h
+        suffixAutomatonOp.h)

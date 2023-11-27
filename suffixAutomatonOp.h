@@ -1,25 +1,22 @@
-#ifndef SUFFIXAUTOMATON_SUFFIXAUTOMATONNO_H
-#define SUFFIXAUTOMATON_SUFFIXAUTOMATONNO_H
-
+#ifndef SUFFIXAUTOMATON_SUFFIXAUTOMATONOP_H
+#define SUFFIXAUTOMATON_SUFFIXAUTOMATONOP_H
 #include <unordered_map>
-#include "circularArrayMod.h"
-
 #include <vector>
 #include <string>
 #include <algorithm>
 #include <limits>
-#include "nodeMod.h"
 
- // para una transición
+
+typedef std::pair<char, int> tr; // para una transición
 using namespace std;
-/*
-struct StateNO {
+
+struct StateOp {
     int len; // longitud de la cadena
     int link; //posicion del estado al que está linqueado
     int first; // posicion de la primera ocurrencia en ese estado
     bool clone = false; // si el estado es un estado clonado
-    CircularArray<tr> transitions; // transiciones salientes hacia otros estados
-    CircularArray<int> suffixreferences; // referencias a sufijos
+    vector<tr> transitions; // transiciones salientes hacia otros estados
+    vector<int> suffixreferences; // referencias a sufijos
     bool terminal = false; // si un estado es terminal
     int index; // indice del estado
 
@@ -35,14 +32,12 @@ struct StateNO {
     // Complejidad: O(T), donde T es la cantidad de transiciones del estado. El peor caso sería: O(|S|_q - 1) -> O(n)
     int GetTransition(char c)
     {
-        for (int i=transitions.Idxfront(); i<=transitions.Idxback(); i = (i+1)%transitions.getCapacity())
+        for (auto& t : transitions)
         {
-            if (transitions[i].key == c)
+            if (t.first == c)
             {
-                return transitions[i].value;
+                return t.second;
             }
-            if (i == transitions.Idxback() && transitions.is_full())
-                break;
         }
         return -1;
     }
@@ -50,23 +45,21 @@ struct StateNO {
     // Actualiza la transicion a través del caracter c al nuevo indice
     void UpdateTransition(char c, int i)
     {
-        for (int j=transitions.Idxfront(); j<=transitions.Idxback(); j=(j+1)%transitions.getCapacity())
+        for (auto& t : transitions)
         {
-            if (transitions[j].key == c)
+            if (t.first == c)
             {
-                transitions[j].value = i;
+                t.second = i;
                 return;
             }
-            if (j == transitions.Idxback() && transitions.is_full())
-                break;
         }
     }
 };
 
-struct SuffixAutomaton {
-    bool issuffixreferences = false; // indica si se ha calculado las referencia a sufijos
-    CircularArray<State> states; // vector de estados
-    State GetState(int i)  // devuelve el estado con indice i
+struct SuffixAutomatonOp {
+    bool suffixreferences = false; // indica si se ha calculado las referencia a sufijos
+    vector<StateOp> states; // vector de estados
+    StateOp GetState(int i)  // devuelve el estado con indice i
     {
         return states[i];
     }
@@ -74,9 +67,9 @@ struct SuffixAutomaton {
     // crea un nuevo estado con longitud len y retorna su indice
     int AddState(int len)
     {
-        State a;
+        StateOp a;
         a.len = len;
-        a.index = states.getBack().index + 1;
+        a.index = states.back().index + 1;
         states.push_back(a);
         return a.index;
     }
@@ -84,19 +77,17 @@ struct SuffixAutomaton {
     // Completa cada estado con un vector de sus hijos en el arbol de enlaces
     void ComputeSuffixReferences()
     {
-        for (int i=states.Idxfront(); i<=states.Idxback(); i = (i+1)%states.getCapacity())
+        for (int i = 1; i < states.size(); i++)
         {
             states[states[i].link].suffixreferences.push_back(i);
-            if (i ==states.Idxback() && states.is_full())
-                break;
         }
-        issuffixreferences = true;
+        suffixreferences = true;
     }
 
     // crea el automata para una cadena s
-    SuffixAutomaton(string s) {
+    SuffixAutomatonOp(string s) {
         // inicializa un estado inicial
-        State l;
+        StateOp l;
         l.len = 0;
         l.link = -1;
         l.index = 0;
@@ -223,7 +214,7 @@ struct SuffixAutomaton {
     {
         vector<int> p;
         int sz = s.size();
-        if (!issuffixreferences) ComputeSuffixReferences();
+        if (!suffixreferences) ComputeSuffixReferences();
         int next = 0;
         for (int i = 0; i < sz; i++)
         {
@@ -231,22 +222,20 @@ struct SuffixAutomaton {
             if (next == -1) return {};
         }
         // Traverse link tree down from first occurrence to find all others
-        CircularArray<int> stack = {next};
+        vector<int> stack = {next};
         while (stack.size() > 0)
         {
-            next = stack.getBack();
+            next = stack.back();
             stack.pop_back();
             if (!states[next].clone) p.push_back(states[next].first - sz + 1);
-            for (int i=states[next].suffixreferences.Idxfront(); i<=states[next].suffixreferences.Idxback(); i = (i+1)%states[next].suffixreferences.getCapacity())
+            for (auto& i : states[next].suffixreferences)
             {
                 stack.push_back(i);
-                if (i == states[next].suffixreferences.Idxback() && states[next].suffixreferences.is_full())
-                    break;
             }
         }
-        std::sort(p.begin(), p.end());
+        sort(p.begin(), p.end());
         return p;
     }
 };
-*/
-#endif //SUFFIXAUTOMATON_SUFFIXAUTOMATONNO_H
+
+#endif //SUFFIXAUTOMATON_SUFFIXAUTOMATONOP_H

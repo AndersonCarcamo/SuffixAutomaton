@@ -7,7 +7,7 @@ struct Node {
     V value;
     Node() = default;
     Node(K k, V v);
-    ~Node() = default;
+    ~Node() =  default;
 };
 
 template <typename K, typename V>
